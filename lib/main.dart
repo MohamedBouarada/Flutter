@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import './question.dart';
+import './answer.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,16 +17,26 @@ class _MyAppState extends State<MyApp> {
 
   void _answerQuestion() {
     setState(() {
-      _questionIndex = (_questionIndex + 1)%2;  
+      _questionIndex = (_questionIndex + 1) % 3;
     });
     print(_questionIndex);
   }
 
   @override
   Widget build(BuildContext context) {
-    var questions = [
-      'What\'s your favorate color?',
-      'What\'s your favorate animal?',
+   var questions = [
+      {
+        'questionText': 'What\'s your favorite color?',
+        'answers': ['Black', 'Red', 'Green', 'White'],
+      },
+      {
+        'questionText': 'What\'s your favorite animal?',
+        'answers': ['Rabbit', 'Snake', 'Elephant', 'Lion'],
+      },
+      {
+        'questionText': 'Who\'s your favorite instructor?',
+        'answers': ['Bo3', 'BO3', 'Bo33', 'LBO3'],
+      },
     ];
 
     return MaterialApp(
@@ -36,23 +47,28 @@ class _MyAppState extends State<MyApp> {
         body: Column(
           children: [
             Question(
-              questions[_questionIndex],
+              questions[_questionIndex]['questionText'] as String,
             ),
-            RaisedButton(
-              child: Text('Answer 1'),
-              onPressed: _answerQuestion,
-            ),
-            RaisedButton(
-              child: Text('Answer 2'),
-              onPressed: () => print('Answer 2 chosen!'),
-            ),
-            RaisedButton(
-              child: Text('Answer 3'),
-              onPressed: () {
-                //...
-                print('Answer 3 chosen!');
-              },
-            ),
+            ...(questions[_questionIndex]['answers'] as List<String>)
+                .map((answer) {
+              return Answer(_answerQuestion, answer);
+            }).toList()
+            // RaisedButton(
+            //   color: Colors.blue,
+            //   child: Text('Answer 1'),
+            //   onPressed: _answerQuestion,
+            // ),
+            // RaisedButton(
+            //   child: Text('Answer 2'),
+            //   onPressed: () => print('Answer 2 chosen!'),
+            // ),
+            // RaisedButton(
+            //   child: Text('Answer 3'),
+            //   onPressed: () {
+            //     //...
+            //     print('Answer 3 chosen!');
+            //   },
+            // ),
           ],
         ),
       ),
